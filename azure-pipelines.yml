@@ -1,19 +1,46 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# Azure DevOps pipeline for a simple "Hello World" GitHub repository
 
 trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+# Build Stage
+- stage: Build
+  displayName: "Build Stage"
+  jobs:
+  - job: BuildJob
+    displayName: "Build Job"
+    steps:
+    - script: |
+        echo "This is the Build stage"
+        echo "Building the project..."
+      displayName: "Echo Build Stage"
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+# Test Stage
+- stage: Test
+  displayName: "Test Stage"
+  dependsOn: Build
+  jobs:
+  - job: TestJob
+    displayName: "Test Job"
+    steps:
+    - script: |
+        echo "This is the Test stage"
+        echo "Running tests..."
+      displayName: "Echo Test Stage"
+
+# Deploy Stage
+- stage: Deploy
+  displayName: "Deploy Stage"
+  dependsOn: Test
+  jobs:
+  - job: DeployJob
+    displayName: "Deploy Job"
+    steps:
+    - script: |
+        echo "This is the Deploy stage"
+        echo "Deploying the application..."
+      displayName: "Echo Deploy Stage"
